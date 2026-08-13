@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Club Rio Jake — Does Draft Order Matter? (2011–2025)</title>
+<style>
+  :root{
+    --plane:#f9f9f7; --surface:#fcfcfb;
+    --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
+    --blue:#2a78d6; --red:#e34948; --good:#0ca30c;
+    --deemph:#c9c8c1;
+    --seq0:#eef4fd; --seq1:#cde2fb; --seq4:#3987e5; --seq7:#0d366b;
+    color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --plane:#0d0d0d; --surface:#1a1a19;
+    --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
+    --blue:#3987e5; --red:#e66767; --good:#0ca30c;
+    --deemph:#4a4a46;
+    --seq0:#12233a; --seq1:#184f95; --seq4:#3987e5; --seq7:#cde2fb;
+    color-scheme:dark;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:where(:not([data-theme="light"])){
+      --plane:#0d0d0d; --surface:#1a1a19;
+      --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
+      --blue:#3987e5; --red:#e66767; --deemph:#4a4a46;
+      --seq0:#12233a; --seq1:#184f95; --seq4:#3987e5; --seq7:#cde2fb;
+      color-scheme:dark;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--plane); color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:15px; line-height:1.55;
+  }
+  .wrap{max-width:1120px; margin:0 auto; padding:28px 20px 80px}
+  header.top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:8px}
+  h1{font-size:26px; line-height:1.2; margin:0 0 4px; letter-spacing:-.01em}
+  .sub{color:var(--ink2); font-size:14px; margin:0}
+  button.toggle{
+    background:var(--surface); color:var(--ink2); border:1px solid var(--ring);
+    border-radius:999px; padding:7px 14px; font:inherit; font-size:13px; cursor:pointer;
+  }
+  button.toggle:hover{color:var(--ink)}
+  .card{
+    background:var(--surface); border:1px solid var(--ring); border-radius:14px;
+    padding:22px 24px; margin:18px 0;
+  }
+  h2{font-size:19px; margin:34px 0 2px; letter-spacing:-.01em}
+  h2 + .lede{color:var(--ink2); font-size:14px; margin:0 0 6px}
+  h3{font-size:15px; margin:0 0 2px}
+  .chartnote{color:var(--muted); font-size:12.5px; margin:0 0 14px}
+
+  /* hero */
+  .hero{display:flex; gap:28px; align-items:center; flex-wrap:wrap}
+  .heroFig{font-size:60px; font-weight:650; line-height:1; letter-spacing:-.03em}
+  .heroBody{flex:1 1 420px; min-width:280px}
+  .heroKicker{font-size:12px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); margin:0 0 6px}
+  .heroBody p{margin:0; font-size:15.5px; color:var(--ink2)}
+  .heroBody strong{color:var(--ink)}
+
+  /* KPI */
+  .kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:14px; margin:16px 0 6px}
+  .tile{background:var(--surface); border:1px solid var(--ring); border-radius:12px; padding:16px 18px}
+  .tile .lab{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin:0 0 8px}
+  .tile .val{font-size:30px; font-weight:600; line-height:1; letter-spacing:-.02em}
+  .tile .cap{font-size:12.5px; color:var(--ink2); margin:8px 0 0}
+
+  svg{display:block; overflow:visible; max-width:100%}
+  .gl{stroke:var(--grid); stroke-width:1}
+  .ax{stroke:var(--axis); stroke-width:1}
+  .tick{fill:var(--muted); font-size:11px; font-variant-numeric:tabular-nums}
+  .vlab{fill:var(--ink2); font-size:11px; font-variant-numeric:tabular-nums}
+  .slotlab{fill:var(--ink2); font-size:11.5px; font-variant-numeric:tabular-nums}
+  .refline{stroke:var(--ink2); stroke-width:1; opacity:.55}
+  .reftxt{fill:var(--ink2); font-size:11px}
+  .bar{fill:var(--blue)}
+  .bar.dim{fill:var(--deemph)}
+  .bar.neg{fill:var(--blue)}
+  .bar.pos{fill:var(--red)}
+  .hit{fill:transparent; cursor:default}
+
+  .legend{display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin:0 0 10px; font-size:12.5px; color:var(--ink2)}
+  .swatch{width:11px; height:11px; border-radius:3px; display:inline-block; margin-right:6px; vertical-align:-1px}
+
+  /* heatmap */
+  .hm{border-collapse:separate; border-spacing:2px; font-variant-numeric:tabular-nums}
+  .hm th{font-size:11px; color:var(--muted); font-weight:500; padding:2px 4px}
+  .hm th.yr{text-align:right; padding-right:8px}
+  .hm td{width:34px; height:26px; text-align:center; font-size:11.5px; border-radius:4px; color:#fff}
+  .hm td.lt{color:#0b0b0b}
+  .gradbar{height:10px; border-radius:5px; width:220px;
+    background:linear-gradient(90deg,var(--seq7),var(--seq4),var(--seq1))}
+
+  /* tables */
+  .yrchips{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 16px}
+  .chip{background:var(--surface); border:1px solid var(--ring); color:var(--ink2);
+    border-radius:999px; padding:5px 11px; font:inherit; font-size:12.5px; cursor:pointer; font-variant-numeric:tabular-nums}
+  .chip[aria-pressed="true"]{background:var(--blue); border-color:var(--blue); color:#fff}
+  table.dt{width:100%; border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums}
+  table.dt th{text-align:right; font-weight:600; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:.05em; color:var(--muted); padding:6px 8px; border-bottom:1px solid var(--axis)}
+  table.dt th:nth-child(2),table.dt th:nth-child(3){text-align:left}
+  table.dt td{text-align:right; padding:6px 8px; border-bottom:1px solid var(--grid)}
+  table.dt td:nth-child(2),table.dt td:nth-child(3){text-align:left}
+  table.dt tr.po td{background:color-mix(in srgb,var(--blue) 8%,transparent)}
+  table.dt caption{text-align:left; font-size:14px; font-weight:600; padding:0 0 8px}
+  .pill{display:inline-block; font-size:11px; padding:1px 7px; border-radius:999px;
+    background:color-mix(in srgb,var(--blue) 16%,transparent); color:var(--ink)}
+  .pill.champ{background:color-mix(in srgb,var(--good) 20%,transparent)}
+  details.tv{margin-top:12px}
+  details.tv summary{font-size:12.5px; color:var(--ink2); cursor:pointer}
+  details.tv table{margin-top:10px}
+
+  .tip{position:fixed; pointer-events:none; opacity:0; transition:opacity .08s;
+    background:var(--surface); color:var(--ink); border:1px solid var(--ring);
+    border-radius:8px; padding:8px 10px; font-size:12.5px; box-shadow:0 6px 24px rgba(0,0,0,.14);
+    z-index:50; max-width:260px}
+  .tip b{font-weight:600}
+  .tip .k{color:var(--muted)}
+  ul.notes{margin:8px 0 0; padding-left:20px; color:var(--ink2); font-size:14px}
+  ul.notes li{margin:6px 0}
+  .foot{color:var(--muted); font-size:12.5px; margin-top:28px}
+  @media print{ .toggle,.yrchips{display:none} .card{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div>
+    <h1>Does draft order matter in Club Rio Jake?</h1>
+    <p class="sub">15 seasons · 2011–2025 · 180 team-seasons · Yahoo league #183003</p>
+  </div>
+  <button class="toggle" id="themeBtn" type="button">Dark mode</button>
+</header>
+
+<div class="card hero">
+  <div>
+    <p class="heroKicker">Draft slot vs regular-season win %</p>
+    <div class="heroFig" id="heroR">r = −0.02</div>
+  </div>
+  <div class="heroBody">
+    <p><strong>No.</strong> Across 15 seasons the pick you drew explains essentially none of
+    how your season went — not your record, not your points, not your playoff run.
+    Draft slot accounts for <strong>0.04% of the variance</strong> in win percentage.
+    The strongest signal anywhere in the data is a mild points-scored edge for early picks
+    (r&nbsp;=&nbsp;−0.10, p&nbsp;=&nbsp;0.18) — still not statistically significant.</p>
+  </div>
+</div>
+
+<div class="kpis" id="kpis"></div>
+
+<h2>Regular season</h2>
+<p class="lede">Records and points scored, averaged by draft slot across all 15 seasons.</p>
+
+<div class="card">
+  <h3>Average win percentage by draft slot</h3>
+  <p class="chartnote">All 15 seasons pooled. Normalised for season length (13 games 2011–20, 14 games 2021–25). Line marks the 50% league average.</p>
+  <div id="c_win"></div>
+  <details class="tv"><summary>Show data table</summary><div id="t_win"></div></details>
+</div>
+
+<div class="card">
+  <h3>Average points scored per game by draft slot</h3>
+  <p class="chartnote">Per-game to keep 13- and 14-game seasons comparable. Line marks the league average of <span id="ppgAvg"></span> points per game.</p>
+  <div id="c_ppg"></div>
+  <details class="tv"><summary>Show data table</summary><div id="t_ppg"></div></details>
+</div>
+
+<div class="card">
+  <h3>Season-by-season: did earlier picks win more?</h3>
+  <p class="chartnote">Correlation between draft slot and win percentage within each season. Fifteen seasons, fifteen different answers — the sign flips almost at random, which is what noise looks like.</p>
+  <div class="legend">
+    <span><span class="swatch" style="background:var(--blue)"></span>Earlier picks did better</span>
+    <span><span class="swatch" style="background:var(--red)"></span>Later picks did better</span>
+  </div>
+  <div id="c_season"></div>
+  <details class="tv"><summary>Show data table</summary><div id="t_season"></div></details>
+</div>
+
+<h2>Playoffs</h2>
+<p class="lede">Qualification, final finish and championships, set against the draft slot each team held.</p>
+
+<div class="card">
+  <h3>Playoff qualification rate by draft slot</h3>
+  <p class="chartnote">Six of twelve teams make the playoffs every year, so 50% is exactly what a coin flip looks like. Slot 7 is the outlier — 2 berths in 15 seasons.</p>
+  <div id="c_po"></div>
+  <details class="tv"><summary>Show data table</summary><div id="t_po"></div></details>
+</div>
+
+<div class="card">
+  <h3>Championships by draft slot</h3>
+  <p class="chartnote">Fifteen titles spread across nine different draft slots. Slot 8 is highlighted because it has five of them — a run that would happen by chance often enough not to mean anything.</p>
+  <div id="c_titles"></div>
+  <details class="tv"><summary>Show data table</summary><div id="t_titles"></div></details>
+</div>
+
+<div class="card">
+  <h3>Final finish by season and draft slot</h3>
+  <p class="chartnote">Every team-season in the league's history. Each cell is where that draft slot finished: darker is better. If draft order mattered, the left side of this grid would be dark and the right side light.</p>
+  <div class="legend">
+    <span>1st (champion)</span>
+    <span class="gradbar"></span>
+    <span>12th</span>
+    <span style="margin-left:8px; color:var(--muted)">Finishes 1–6 made the playoffs</span>
+  </div>
+  <div id="c_heat" style="overflow-x:auto"></div>
+</div>
+
+<h2>Grouped views</h2>
+<p class="lede">The same 180 team-seasons, cut into bigger buckets so each cell has more than 15 observations behind it.</p>
+<div class="card">
+  <div id="t_buckets"></div>
+  <div id="t_halves" style="margin-top:22px"></div>
+</div>
+
+<h2>Season by season</h2>
+<p class="lede">Final regular-season record and points scored, listed in that season's draft order. Playoff teams are shaded.</p>
+<div class="yrchips" id="chips"></div>
+<div class="card" id="seasonTables"></div>
+
+<h2>Method and caveats</h2>
+<div class="card">
+  <ul class="notes">
+    <li><b>Where the numbers come from.</b> Read directly off the league's own Yahoo pages for each of the 15 seasons: the Standings tab (record, points for, final rank), the Draft Results page (round&nbsp;1 order = draft slot), and the Managers page (team-to-manager mapping). Retrieved 13 August 2026.</li>
+    <li><b>Team names change; managers don't.</b> Managers rename teams constantly, so franchises are tracked by manager. Cory alone has been Big Red Machine, Mean Machine, Fournetflix n Chill, Dark Shadows, Fighting Mickeys and Broken Rhules. One caveat: the name <i>PappyVanDrinkle</i> was Keith's in 2023 and Jace's in 2024 — Yahoo carried the name to a new manager, and they are treated as separate franchises here.</li>
+    <li><b>Points scored are not directly comparable across eras.</b> Season length went from 13 games to 14 in 2021, and scoring settings have been tweaked over the years. That's why every points comparison in this report is per game.</li>
+    <li><b>Sign conventions.</b> For win percentage and points, a negative correlation means earlier picks did better. For final finish and points-scored rank — where 1 is best — a positive correlation means earlier picks did better.</li>
+    <li><b>Sample size is the real limit.</b> Fifteen observations per draft slot. With n&nbsp;=&nbsp;180 pooled, a correlation needs |r|&nbsp;&gt;&nbsp;0.15 to clear p&nbsp;&lt;&nbsp;0.05; within a single season (n&nbsp;=&nbsp;12) it needs |r|&nbsp;&gt;&nbsp;0.58. Slot-level records — slot 8's five titles, slot 7's two playoff berths — are fun, not findings.</li>
+    <li><b>What this does not test.</b> Draft slot is not the same as draft <i>quality</i>. A league where everyone drafts about equally well would show exactly this result even if the first pick were genuinely valuable, because good managers at slot 12 offset it. This measures whether the slot alone predicted the outcome — it didn't.</li>
+    <li><b>One data oddity worth flagging.</b> Yahoo's stored round&nbsp;1 for the 2014 and 2015 drafts is almost entirely quarterbacks, which no normal draft produces. The team order in those rounds is used as-is; if those two seasons' draft slots look wrong to you, they're worth a manual check. Excluding them does not change any conclusion here.</li>
+  </ul>
+</div>
+
+<p class="foot">Built for Cory · SureCritic · source: Yahoo Fantasy Football league history, Club Rio Jake (ID 183003)</p>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<script>
+const D = {"bySlot": [{"draft_slot": 1, "seasons": 15, "avg_win_pct": 0.501, "avg_wins_per_14": 7.015, "avg_PF_per_game": 102.09, "avg_PF_rank": 7.267, "avg_final_rank": 6.4, "playoff_rate": 0.4, "playoff_apps": 6, "titles": 2, "finals_apps": 4, "top3": 4}, {"draft_slot": 2, "seasons": 15, "avg_win_pct": 0.48, "avg_wins_per_14": 6.718, "avg_PF_per_game": 105.945, "avg_PF_rank": 5.733, "avg_final_rank": 6.333, "playoff_rate": 0.4, "playoff_apps": 6, "titles": 2, "finals_apps": 4, "top3": 5}, {"draft_slot": 3, "seasons": 15, "avg_win_pct": 0.566, "avg_wins_per_14": 7.918, "avg_PF_per_game": 108.637, "avg_PF_rank": 5.533, "avg_final_rank": 5.533, "playoff_rate": 0.733, "playoff_apps": 11, "titles": 0, "finals_apps": 3, "top3": 3}, {"draft_slot": 4, "seasons": 15, "avg_win_pct": 0.49, "avg_wins_per_14": 6.867, "avg_PF_per_game": 108.045, "avg_PF_rank": 5.667, "avg_final_rank": 6.4, "playoff_rate": 0.6, "playoff_apps": 9, "titles": 1, "finals_apps": 1, "top3": 1}, {"draft_slot": 5, "seasons": 15, "avg_win_pct": 0.578, "avg_wins_per_14": 8.098, "avg_PF_per_game": 106.477, "avg_PF_rank": 6.267, "avg_final_rank": 5.867, "playoff_rate": 0.667, "playoff_apps": 10, "titles": 1, "finals_apps": 2, "top3": 5}, {"draft_slot": 6, "seasons": 15, "avg_win_pct": 0.44, "avg_wins_per_14": 6.159, "avg_PF_per_game": 103.849, "avg_PF_rank": 6.2, "avg_final_rank": 7.133, "playoff_rate": 0.333, "playoff_apps": 5, "titles": 2, "finals_apps": 2, "top3": 4}, {"draft_slot": 7, "seasons": 15, "avg_win_pct": 0.393, "avg_wins_per_14": 5.497, "avg_PF_per_game": 100.657, "avg_PF_rank": 8.067, "avg_final_rank": 8.733, "playoff_rate": 0.133, "playoff_apps": 2, "titles": 0, "finals_apps": 0, "top3": 1}, {"draft_slot": 8, "seasons": 15, "avg_win_pct": 0.514, "avg_wins_per_14": 7.195, "avg_PF_per_game": 106.31, "avg_PF_rank": 5.8, "avg_final_rank": 5.8, "playoff_rate": 0.467, "playoff_apps": 7, "titles": 5, "finals_apps": 5, "top3": 6}, {"draft_slot": 9, "seasons": 15, "avg_win_pct": 0.506, "avg_wins_per_14": 7.082, "avg_PF_per_game": 103.785, "avg_PF_rank": 6.6, "avg_final_rank": 5.533, "playoff_rate": 0.733, "playoff_apps": 11, "titles": 1, "finals_apps": 2, "top3": 4}, {"draft_slot": 10, "seasons": 15, "avg_win_pct": 0.527, "avg_wins_per_14": 7.374, "avg_PF_per_game": 104.213, "avg_PF_rank": 6.933, "avg_final_rank": 6.4, "playoff_rate": 0.467, "playoff_apps": 7, "titles": 1, "finals_apps": 5, "top3": 6}, {"draft_slot": 11, "seasons": 15, "avg_win_pct": 0.525, "avg_wins_per_14": 7.343, "avg_PF_per_game": 105.268, "avg_PF_rank": 5.867, "avg_final_rank": 6.933, "playoff_rate": 0.533, "playoff_apps": 8, "titles": 0, "finals_apps": 1, "top3": 3}, {"draft_slot": 12, "seasons": 15, "avg_win_pct": 0.481, "avg_wins_per_14": 6.733, "avg_PF_per_game": 100.142, "avg_PF_rank": 8.067, "avg_final_rank": 6.933, "playoff_rate": 0.533, "playoff_apps": 8, "titles": 0, "finals_apps": 1, "top3": 3}], "corr": [{"metric": "Draft slot vs win %", "pearson_r": -0.019, "pearson_p": 0.8027, "spearman_rho": -0.014, "spearman_p": 0.8564, "n": 180}, {"metric": "Draft slot vs points/game", "pearson_r": -0.101, "pearson_p": 0.1786, "spearman_rho": -0.094, "spearman_p": 0.2099, "n": 180}, {"metric": "Draft slot vs points-scored rank (1=most)", "pearson_r": 0.087, "pearson_p": 0.2445, "spearman_rho": 0.087, "spearman_p": 0.2445, "n": 180}, {"metric": "Draft slot vs final finish (1=champ)", "pearson_r": 0.05, "pearson_p": 0.5021, "spearman_rho": 0.05, "spearman_p": 0.5021, "n": 180}, {"metric": "Draft slot vs made playoffs", "pearson_r": 0.016, "pearson_p": 0.8302, "spearman_rho": 0.016, "spearman_p": 0.8302, "n": 180}], "perSeason": [{"season": 2011, "rho_slot_vs_winpct": -0.225, "p_winpct": 0.482, "rho_slot_vs_points": -0.385, "p_points": 0.217, "rho_slot_vs_finish": 0.434, "p_finish": 0.159, "champion": "Going Postal", "champ_manager": "Steve", "champ_draft_slot": 1, "playoff_slots": "1,2,4,5,9,12"}, {"season": 2012, "rho_slot_vs_winpct": 0.65, "p_winpct": 0.022, "rho_slot_vs_points": 0.091, "p_points": 0.779, "rho_slot_vs_finish": -0.399, "p_finish": 0.199, "champion": "MochaMessiahMadeMe$$", "champ_manager": "Keith", "champ_draft_slot": 6, "playoff_slots": "3,6,8,9,10,12"}, {"season": 2013, "rho_slot_vs_winpct": -0.273, "p_winpct": 0.391, "rho_slot_vs_points": 0.154, "p_points": 0.633, "rho_slot_vs_finish": 0.168, "p_finish": 0.602, "champion": "Big Red Machine", "champ_manager": "Cory", "champ_draft_slot": 4, "playoff_slots": "2,4,6,9,10,11"}, {"season": 2014, "rho_slot_vs_winpct": 0.042, "p_winpct": 0.896, "rho_slot_vs_points": 0.126, "p_points": 0.697, "rho_slot_vs_finish": -0.308, "p_finish": 0.331, "champion": "Big Red Machine", "champ_manager": "Cory", "champ_draft_slot": 8, "playoff_slots": "3,5,8,9,10,11"}, {"season": 2015, "rho_slot_vs_winpct": -0.117, "p_winpct": 0.717, "rho_slot_vs_points": -0.455, "p_points": 0.137, "rho_slot_vs_finish": 0.0, "p_finish": 1.0, "champion": "Crackerman", "champ_manager": "Michael M", "champ_draft_slot": 10, "playoff_slots": "1,2,4,7,9,10"}, {"season": 2016, "rho_slot_vs_winpct": -0.464, "p_winpct": 0.128, "rho_slot_vs_points": -0.741, "p_points": 0.006, "rho_slot_vs_finish": 0.643, "p_finish": 0.024, "champion": "Donkey Punchers", "champ_manager": "Barrett", "champ_draft_slot": 1, "playoff_slots": "1,3,4,5,8,11"}, {"season": 2017, "rho_slot_vs_winpct": -0.102, "p_winpct": 0.751, "rho_slot_vs_points": -0.371, "p_points": 0.236, "rho_slot_vs_finish": 0.119, "p_finish": 0.713, "champion": "Closer", "champ_manager": "Rick", "champ_draft_slot": 5, "playoff_slots": "1,3,5,9,11,12"}, {"season": 2018, "rho_slot_vs_winpct": 0.296, "p_winpct": 0.351, "rho_slot_vs_points": -0.217, "p_points": 0.499, "rho_slot_vs_finish": 0.133, "p_finish": 0.681, "champion": "Closer", "champ_manager": "Rick", "champ_draft_slot": 8, "playoff_slots": "1,3,4,8,9,12"}, {"season": 2019, "rho_slot_vs_winpct": 0.135, "p_winpct": 0.675, "rho_slot_vs_points": 0.161, "p_points": 0.618, "rho_slot_vs_finish": -0.021, "p_finish": 0.948, "champion": "RedNecks", "champ_manager": "Jim", "champ_draft_slot": 8, "playoff_slots": "3,4,5,8,9,10"}, {"season": 2020, "rho_slot_vs_winpct": 0.589, "p_winpct": 0.044, "rho_slot_vs_points": 0.266, "p_points": 0.404, "rho_slot_vs_finish": -0.336, "p_finish": 0.286, "champion": "#YouToo", "champ_manager": "Keith", "champ_draft_slot": 6, "playoff_slots": "3,5,6,9,11,12"}, {"season": 2021, "rho_slot_vs_winpct": -0.374, "p_winpct": 0.231, "rho_slot_vs_points": -0.301, "p_points": 0.342, "rho_slot_vs_finish": 0.105, "p_finish": 0.746, "champion": "Donkey Punchers", "champ_manager": "Barrett", "champ_draft_slot": 8, "playoff_slots": "3,4,5,7,8,10"}, {"season": 2022, "rho_slot_vs_winpct": -0.37, "p_winpct": 0.237, "rho_slot_vs_points": -0.021, "p_points": 0.948, "rho_slot_vs_finish": 0.182, "p_finish": 0.572, "champion": "PornStache", "champ_manager": "Jim", "champ_draft_slot": 8, "playoff_slots": "2,3,4,5,8,12"}, {"season": 2023, "rho_slot_vs_winpct": 0.318, "p_winpct": 0.314, "rho_slot_vs_points": 0.448, "p_points": 0.145, "rho_slot_vs_finish": -0.441, "p_finish": 0.152, "champion": "AssKickers", "champ_manager": "Rob M", "champ_draft_slot": 9, "playoff_slots": "3,5,9,10,11,12"}, {"season": 2024, "rho_slot_vs_winpct": 0.149, "p_winpct": 0.643, "rho_slot_vs_points": -0.007, "p_points": 0.983, "rho_slot_vs_finish": 0.301, "p_finish": 0.342, "champion": "Scott's Scabs", "champ_manager": "Scott", "champ_draft_slot": 2, "playoff_slots": "2,3,5,6,9,11"}, {"season": 2025, "rho_slot_vs_winpct": -0.108, "p_winpct": 0.737, "rho_slot_vs_points": -0.042, "p_points": 0.897, "rho_slot_vs_finish": 0.175, "p_finish": 0.587, "champion": "Hold My Beer", "champ_manager": "J", "champ_draft_slot": 2, "playoff_slots": "1,2,4,6,11,12"}], "buckets": [{"bucket": "Early (1-4)", "n": 60, "avg_win_pct": 0.509, "avg_PF_per_game": 106.179, "avg_final_rank": 6.167, "playoff_rate": 0.533, "titles": 5, "finals": 12}, {"bucket": "Middle (5-8)", "n": 60, "avg_win_pct": 0.481, "avg_PF_per_game": 104.323, "avg_final_rank": 6.883, "playoff_rate": 0.4, "titles": 8, "finals": 9}, {"bucket": "Late (9-12)", "n": 60, "avg_win_pct": 0.51, "avg_PF_per_game": 103.352, "avg_final_rank": 6.45, "playoff_rate": 0.567, "titles": 2, "finals": 9}], "halves": {"top_half_win_pct": 0.5092, "bottom_half_win_pct": 0.4908, "win_pct_t": 0.75, "win_pct_p": 0.454, "top_half_ppg": 105.84, "bottom_half_ppg": 103.4, "ppg_t": 1.642, "ppg_p": 0.1024, "top_half_playoff_rate": 0.522, "bottom_half_playoff_rate": 0.478, "playoff_chi2": 0.2, "playoff_p": 0.6547, "titles_top_half": 8, "titles_bottom_half": 7}, "rows": [{"season": 2011, "draft_slot": 1, "team": "Going Postal", "manager": "Steve", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1299.0, "PF_per_game": 99.92, "PF_rank": 6, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2011, "draft_slot": 2, "team": "Scott's Scabs", "manager": "Scott", "W": 11, "L": 2, "T": 0, "record": "11-2-0", "win_pct": 0.8462, "PF": 1480.0, "PF_per_game": 113.85, "PF_rank": 3, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2011, "draft_slot": 3, "team": "RedNecks", "manager": "Jim", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1231.0, "PF_per_game": 94.69, "PF_rank": 8, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2011, "draft_slot": 4, "team": "Big Red Machine", "manager": "Cory", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1608.0, "PF_per_game": 123.69, "PF_rank": 2, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2011, "draft_slot": 5, "team": "RedZone480", "manager": "Robert", "W": 12, "L": 1, "T": 0, "record": "12-1-0", "win_pct": 0.9231, "PF": 1670.0, "PF_per_game": 128.46, "PF_rank": 1, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2011, "draft_slot": 6, "team": "Donkey Punchers", "manager": "Barrett", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1187.0, "PF_per_game": 91.31, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2011, "draft_slot": 7, "team": "Closer", "manager": "Rick", "W": 1, "L": 12, "T": 0, "record": "1-12-0", "win_pct": 0.0769, "PF": 1076.0, "PF_per_game": 82.77, "PF_rank": 12, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2011, "draft_slot": 8, "team": "MochaMessiahMadeMe$$", "manager": "Keith", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1322.0, "PF_per_game": 101.69, "PF_rank": 5, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2011, "draft_slot": 9, "team": "Vandalay Industries", "manager": "John", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1331.0, "PF_per_game": 102.38, "PF_rank": 4, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2011, "draft_slot": 10, "team": "AssKickers", "manager": "Rob M", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1225.0, "PF_per_game": 94.23, "PF_rank": 9, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2011, "draft_slot": 11, "team": "Crackerman", "manager": "Michael M", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1271.0, "PF_per_game": 97.77, "PF_rank": 7, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2011, "draft_slot": 12, "team": "Spike's Chupacabras", "manager": "Spike", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1206.0, "PF_per_game": 92.77, "PF_rank": 10, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2012, "draft_slot": 1, "team": "Crackerman", "manager": "Michael M", "W": 3, "L": 10, "T": 0, "record": "3-10-0", "win_pct": 0.2308, "PF": 1309.0, "PF_per_game": 100.69, "PF_rank": 7, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2012, "draft_slot": 2, "team": "Spike's Chupacabras", "manager": "Spike", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1368.0, "PF_per_game": 105.23, "PF_rank": 4, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2012, "draft_slot": 3, "team": "AssKickers", "manager": "Rob M", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1321.0, "PF_per_game": 101.62, "PF_rank": 6, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2012, "draft_slot": 4, "team": "Donkey Punchers", "manager": "Barrett", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1234.0, "PF_per_game": 94.92, "PF_rank": 11, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2012, "draft_slot": 5, "team": "Big Red Machine", "manager": "Cory", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1297.0, "PF_per_game": 99.77, "PF_rank": 9, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2012, "draft_slot": 6, "team": "MochaMessiahMadeMe$$", "manager": "Keith", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1357.0, "PF_per_game": 104.38, "PF_rank": 5, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2012, "draft_slot": 7, "team": "Closer", "manager": "Rick", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1276.0, "PF_per_game": 98.15, "PF_rank": 10, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2012, "draft_slot": 8, "team": "Vandalay Industries", "manager": "John", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1417.0, "PF_per_game": 109.0, "PF_rank": 3, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2012, "draft_slot": 9, "team": "Scott's Scabs", "manager": "Scott", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1302.0, "PF_per_game": 100.15, "PF_rank": 8, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2012, "draft_slot": 10, "team": "RedZone480", "manager": "Robert", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1458.0, "PF_per_game": 112.15, "PF_rank": 1, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2012, "draft_slot": 11, "team": "Going Postal", "manager": "Steve", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1455.0, "PF_per_game": 111.92, "PF_rank": 2, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2012, "draft_slot": 12, "team": "RedNecks", "manager": "Jim", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1220.0, "PF_per_game": 93.85, "PF_rank": 12, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2013, "draft_slot": 1, "team": "Going Postal", "manager": "Steve", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1272.0, "PF_per_game": 97.85, "PF_rank": 11, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2013, "draft_slot": 2, "team": "Vandalay Industries", "manager": "John", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1449.0, "PF_per_game": 111.46, "PF_rank": 3, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2013, "draft_slot": 3, "team": "Donkey Punchers", "manager": "Barrett", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1297.0, "PF_per_game": 99.77, "PF_rank": 10, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2013, "draft_slot": 4, "team": "Big Red Machine", "manager": "Cory", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1523.0, "PF_per_game": 117.15, "PF_rank": 2, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2013, "draft_slot": 5, "team": "AssKickers", "manager": "Rob M", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1298.0, "PF_per_game": 99.85, "PF_rank": 9, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2013, "draft_slot": 6, "team": "CreepyAssCrackers", "manager": "Keith", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1396.0, "PF_per_game": 107.38, "PF_rank": 4, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2013, "draft_slot": 7, "team": "Crackerman", "manager": "Michael M", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1208.0, "PF_per_game": 92.92, "PF_rank": 12, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2013, "draft_slot": 8, "team": "RedNecks", "manager": "Jim", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1351.0, "PF_per_game": 103.92, "PF_rank": 5, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2013, "draft_slot": 9, "team": "Spike's Chupacabras", "manager": "Spike", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1325.0, "PF_per_game": 101.92, "PF_rank": 6, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2013, "draft_slot": 10, "team": "RedZone480", "manager": "Robert", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1704.0, "PF_per_game": 131.08, "PF_rank": 1, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Late (9-12)"}, {"season": 2013, "draft_slot": 11, "team": "Closer", "manager": "Rick", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1310.0, "PF_per_game": 100.77, "PF_rank": 7, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2013, "draft_slot": 12, "team": "Scott's Scabs", "manager": "Scott", "W": 2, "L": 11, "T": 0, "record": "2-11-0", "win_pct": 0.1538, "PF": 1307.0, "PF_per_game": 100.54, "PF_rank": 8, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2014, "draft_slot": 1, "team": "RedZone480", "manager": "Robert", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1255.0, "PF_per_game": 96.54, "PF_rank": 9, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2014, "draft_slot": 2, "team": "Spike's Chupacabras", "manager": "Spike", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1258.0, "PF_per_game": 96.77, "PF_rank": 8, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2014, "draft_slot": 3, "team": "Closer", "manager": "Rick", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1545.0, "PF_per_game": 118.85, "PF_rank": 2, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2014, "draft_slot": 4, "team": "RedNecks", "manager": "Jim", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1199.0, "PF_per_game": 92.23, "PF_rank": 11, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2014, "draft_slot": 5, "team": "Scott's Scabs", "manager": "Scott", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1372.0, "PF_per_game": 105.54, "PF_rank": 5, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2014, "draft_slot": 6, "team": "Crackerman", "manager": "Michael M", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1253.0, "PF_per_game": 96.38, "PF_rank": 10, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2014, "draft_slot": 7, "team": "Donkey Punchers", "manager": "Barrett", "W": 3, "L": 10, "T": 0, "record": "3-10-0", "win_pct": 0.2308, "PF": 1326.0, "PF_per_game": 102.0, "PF_rank": 7, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2014, "draft_slot": 8, "team": "Big Red Machine", "manager": "Cory", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1620.0, "PF_per_game": 124.62, "PF_rank": 1, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2014, "draft_slot": 9, "team": "Going Postal", "manager": "Steve", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1351.0, "PF_per_game": 103.92, "PF_rank": 6, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2014, "draft_slot": 10, "team": "Golden Taint", "manager": "Keith", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1530.0, "PF_per_game": 117.69, "PF_rank": 3, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2014, "draft_slot": 11, "team": "AssKickers", "manager": "Rob M", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1384.0, "PF_per_game": 106.46, "PF_rank": 4, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Late (9-12)"}, {"season": 2014, "draft_slot": 12, "team": "Vandalay Industries", "manager": "John", "W": 3, "L": 10, "T": 0, "record": "3-10-0", "win_pct": 0.2308, "PF": 1120.0, "PF_per_game": 86.15, "PF_rank": 12, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2015, "draft_slot": 1, "team": "Vandalay Industries", "manager": "John", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1472.0, "PF_per_game": 113.23, "PF_rank": 2, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2015, "draft_slot": 2, "team": "Golden Taint", "manager": "Keith", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1587.0, "PF_per_game": 122.08, "PF_rank": 1, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2015, "draft_slot": 3, "team": "RedNecks", "manager": "Jim", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1325.0, "PF_per_game": 101.92, "PF_rank": 7, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2015, "draft_slot": 4, "team": "RedZone480", "manager": "Robert", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1271.0, "PF_per_game": 97.77, "PF_rank": 9, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2015, "draft_slot": 5, "team": "AssKickers", "manager": "Rob M", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1192.0, "PF_per_game": 91.69, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2015, "draft_slot": 6, "team": "Scott's Scabs", "manager": "Scott", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1391.0, "PF_per_game": 107.0, "PF_rank": 3, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2015, "draft_slot": 7, "team": "Big Red Machine", "manager": "Cory", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1345.0, "PF_per_game": 103.46, "PF_rank": 6, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2015, "draft_slot": 8, "team": "Closer", "manager": "Rick", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1271.0, "PF_per_game": 97.77, "PF_rank": 10, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2015, "draft_slot": 9, "team": "Going Postal", "manager": "Steve", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1382.0, "PF_per_game": 106.31, "PF_rank": 4, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Late (9-12)"}, {"season": 2015, "draft_slot": 10, "team": "Crackerman", "manager": "Michael M", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1378.0, "PF_per_game": 106.0, "PF_rank": 5, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2015, "draft_slot": 11, "team": "Donkey Punchers", "manager": "Barrett", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1294.0, "PF_per_game": 99.54, "PF_rank": 8, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2015, "draft_slot": 12, "team": "Spike's Chupacabras", "manager": "Spike", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1185.0, "PF_per_game": 91.15, "PF_rank": 12, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2016, "draft_slot": 1, "team": "Donkey Punchers", "manager": "Barrett", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1474.0, "PF_per_game": 113.38, "PF_rank": 1, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2016, "draft_slot": 2, "team": "Boda's Buttkickers", "manager": "Greg", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1307.0, "PF_per_game": 100.54, "PF_rank": 7, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2016, "draft_slot": 3, "team": "AssKickers", "manager": "Rob M", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1458.0, "PF_per_game": 112.15, "PF_rank": 2, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2016, "draft_slot": 4, "team": "RedNecks", "manager": "Jim", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1441.0, "PF_per_game": 110.85, "PF_rank": 4, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2016, "draft_slot": 5, "team": "Ziggy Starfish", "manager": "Keith", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1457.0, "PF_per_game": 112.08, "PF_rank": 3, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2016, "draft_slot": 6, "team": "Scott's Scabs", "manager": "Scott", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1387.0, "PF_per_game": 106.69, "PF_rank": 5, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2016, "draft_slot": 7, "team": "Vandalay Industries", "manager": "John", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1221.0, "PF_per_game": 93.92, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2016, "draft_slot": 8, "team": "Closer", "manager": "Rick", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1262.0, "PF_per_game": 97.08, "PF_rank": 9, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2016, "draft_slot": 9, "team": "Big Red Machine", "manager": "Cory", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1282.0, "PF_per_game": 98.62, "PF_rank": 8, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2016, "draft_slot": 10, "team": "Spike's Chupacabras", "manager": "Spike", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1247.0, "PF_per_game": 95.92, "PF_rank": 10, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2016, "draft_slot": 11, "team": "RedZone480", "manager": "Robert", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1378.0, "PF_per_game": 106.0, "PF_rank": 6, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2016, "draft_slot": 12, "team": "Going Postal", "manager": "Steve", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1159.0, "PF_per_game": 89.15, "PF_rank": 12, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2017, "draft_slot": 1, "team": "Donkey Punchers", "manager": "Barrett", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1402.0, "PF_per_game": 107.85, "PF_rank": 2, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2017, "draft_slot": 2, "team": "AssKickers", "manager": "Rob M", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1331.0, "PF_per_game": 102.38, "PF_rank": 3, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2017, "draft_slot": 3, "team": "Ziggy Starfish", "manager": "Keith", "W": 12, "L": 1, "T": 0, "record": "12-1-0", "win_pct": 0.9231, "PF": 1618.0, "PF_per_game": 124.46, "PF_rank": 1, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2017, "draft_slot": 4, "team": "Vandalay Industries", "manager": "John", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1167.0, "PF_per_game": 89.77, "PF_rank": 9, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2017, "draft_slot": 5, "team": "Closer", "manager": "Rick", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1286.0, "PF_per_game": 98.92, "PF_rank": 6, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2017, "draft_slot": 6, "team": "Spike's Chupacabras", "manager": "Spike", "W": 3, "L": 10, "T": 0, "record": "3-10-0", "win_pct": 0.2308, "PF": 1067.0, "PF_per_game": 82.08, "PF_rank": 12, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2017, "draft_slot": 7, "team": "Scott's Scabs", "manager": "Scott", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1221.0, "PF_per_game": 93.92, "PF_rank": 8, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2017, "draft_slot": 8, "team": "Boda's Buttkickers", "manager": "Greg", "W": 3, "L": 10, "T": 0, "record": "3-10-0", "win_pct": 0.2308, "PF": 1086.0, "PF_per_game": 83.54, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2017, "draft_slot": 9, "team": "Going Postal", "manager": "Steve", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1224.0, "PF_per_game": 94.15, "PF_rank": 7, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2017, "draft_slot": 10, "team": "RedNecks", "manager": "Jim", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1157.0, "PF_per_game": 89.0, "PF_rank": 10, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2017, "draft_slot": 11, "team": "Big Red Machine", "manager": "Cory", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1323.0, "PF_per_game": 101.77, "PF_rank": 4, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2017, "draft_slot": 12, "team": "RedZone480", "manager": "Robert", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1306.0, "PF_per_game": 100.46, "PF_rank": 5, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Late (9-12)"}, {"season": 2018, "draft_slot": 1, "team": "RedZone480", "manager": "Robert", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1570.0, "PF_per_game": 120.77, "PF_rank": 2, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2018, "draft_slot": 2, "team": "Scott's Scabs", "manager": "Scott", "W": 3, "L": 10, "T": 0, "record": "3-10-0", "win_pct": 0.2308, "PF": 1294.0, "PF_per_game": 99.54, "PF_rank": 10, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2018, "draft_slot": 3, "team": "Going Postal", "manager": "Steve", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1565.0, "PF_per_game": 120.38, "PF_rank": 3, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2018, "draft_slot": 4, "team": "#YouToo", "manager": "Keith", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1651.0, "PF_per_game": 127.0, "PF_rank": 1, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2018, "draft_slot": 5, "team": "RedNecks", "manager": "Jim", "W": 3, "L": 10, "T": 0, "record": "3-10-0", "win_pct": 0.2308, "PF": 1142.0, "PF_per_game": 87.85, "PF_rank": 12, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2018, "draft_slot": 6, "team": "Spike's Chupacabras", "manager": "Spike", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1331.0, "PF_per_game": 102.38, "PF_rank": 9, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2018, "draft_slot": 7, "team": "Eagles got a big Cox", "manager": "Brian C", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1380.0, "PF_per_game": 106.15, "PF_rank": 7, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2018, "draft_slot": 8, "team": "Closer", "manager": "Rick", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1500.0, "PF_per_game": 115.38, "PF_rank": 5, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2018, "draft_slot": 9, "team": "Mean Machine", "manager": "Cory", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1389.0, "PF_per_game": 106.85, "PF_rank": 6, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2018, "draft_slot": 10, "team": "Donkey Punchers", "manager": "Barrett", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1202.0, "PF_per_game": 92.46, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2018, "draft_slot": 11, "team": "AssKickers", "manager": "Rob M", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1376.0, "PF_per_game": 105.85, "PF_rank": 8, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2018, "draft_slot": 12, "team": "Vandalay Industries", "manager": "John", "W": 10, "L": 3, "T": 0, "record": "10-3-0", "win_pct": 0.7692, "PF": 1516.0, "PF_per_game": 116.62, "PF_rank": 4, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Late (9-12)"}, {"season": 2019, "draft_slot": 1, "team": "Donkey Punchers", "manager": "Barrett", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1066.54, "PF_per_game": 82.04, "PF_rank": 12, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2019, "draft_slot": 2, "team": "RedZone480", "manager": "Robert", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1222.48, "PF_per_game": 94.04, "PF_rank": 9, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2019, "draft_slot": 3, "team": "Vandalay Industries", "manager": "John", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1334.64, "PF_per_game": 102.66, "PF_rank": 4, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2019, "draft_slot": 4, "team": "AssKickers", "manager": "Rob M", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1473.5, "PF_per_game": 113.35, "PF_rank": 1, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2019, "draft_slot": 5, "team": "Fake News", "manager": "Brian C", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1213.34, "PF_per_game": 93.33, "PF_rank": 10, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2019, "draft_slot": 6, "team": "#YouToo", "manager": "Keith", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1260.92, "PF_per_game": 96.99, "PF_rank": 6, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2019, "draft_slot": 7, "team": "Fournetflix n Chill", "manager": "Cory", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1234.78, "PF_per_game": 94.98, "PF_rank": 8, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2019, "draft_slot": 8, "team": "RedNecks", "manager": "Jim", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1457.84, "PF_per_game": 112.14, "PF_rank": 2, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2019, "draft_slot": 9, "team": "Spike's Chupacabras", "manager": "Spike", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1322.48, "PF_per_game": 101.73, "PF_rank": 5, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Late (9-12)"}, {"season": 2019, "draft_slot": 10, "team": "Going Postal", "manager": "Steve", "W": 9, "L": 4, "T": 0, "record": "9-4-0", "win_pct": 0.6923, "PF": 1414.44, "PF_per_game": 108.8, "PF_rank": 3, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2019, "draft_slot": 11, "team": "Closer", "manager": "Rick", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1152.28, "PF_per_game": 88.64, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2019, "draft_slot": 12, "team": "Scott's Scabs", "manager": "Scott", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1249.78, "PF_per_game": 96.14, "PF_rank": 7, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2020, "draft_slot": 1, "team": "Donkey Punchers", "manager": "Barrett", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1322.86, "PF_per_game": 101.76, "PF_rank": 10, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2020, "draft_slot": 2, "team": "Vandalay Industries", "manager": "John", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1195.64, "PF_per_game": 91.97, "PF_rank": 12, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2020, "draft_slot": 3, "team": "Yuge Loser(s)", "manager": "Brian C", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1420.02, "PF_per_game": 109.23, "PF_rank": 7, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2020, "draft_slot": 4, "team": "RedNecks", "manager": "Jim", "W": 4, "L": 9, "T": 0, "record": "4-9-0", "win_pct": 0.3077, "PF": 1440.48, "PF_per_game": 110.81, "PF_rank": 6, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2020, "draft_slot": 5, "team": "Dark Shadows", "manager": "Cory", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1522.88, "PF_per_game": 117.14, "PF_rank": 2, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2020, "draft_slot": 6, "team": "#YouToo", "manager": "Keith", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1558.02, "PF_per_game": 119.85, "PF_rank": 1, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2020, "draft_slot": 7, "team": "AssKickers", "manager": "Rob M", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1501.0, "PF_per_game": 115.46, "PF_rank": 3, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2020, "draft_slot": 8, "team": "Going Postal", "manager": "Steve", "W": 5, "L": 8, "T": 0, "record": "5-8-0", "win_pct": 0.3846, "PF": 1245.38, "PF_per_game": 95.8, "PF_rank": 11, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2020, "draft_slot": 9, "team": "Closer", "manager": "Rick", "W": 7, "L": 6, "T": 0, "record": "7-6-0", "win_pct": 0.5385, "PF": 1415.36, "PF_per_game": 108.87, "PF_rank": 9, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2020, "draft_slot": 10, "team": "RedZone480", "manager": "Robert", "W": 6, "L": 7, "T": 0, "record": "6-7-0", "win_pct": 0.4615, "PF": 1418.68, "PF_per_game": 109.13, "PF_rank": 8, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2020, "draft_slot": 11, "team": "Scott's Scabs", "manager": "Scott", "W": 8, "L": 5, "T": 0, "record": "8-5-0", "win_pct": 0.6154, "PF": 1482.78, "PF_per_game": 114.06, "PF_rank": 4, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2020, "draft_slot": 12, "team": "Spike's Chupacabras", "manager": "Spike", "W": 11, "L": 2, "T": 0, "record": "11-2-0", "win_pct": 0.8462, "PF": 1450.4, "PF_per_game": 111.57, "PF_rank": 5, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2021, "draft_slot": 1, "team": "Scott's Scabs", "manager": "Scott", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1389.68, "PF_per_game": 99.26, "PF_rank": 12, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2021, "draft_slot": 2, "team": "AssKickers", "manager": "Rob M", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1522.46, "PF_per_game": 108.75, "PF_rank": 6, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2021, "draft_slot": 3, "team": "RedZone480", "manager": "Robert", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1704.46, "PF_per_game": 121.75, "PF_rank": 3, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2021, "draft_slot": 4, "team": "RedNecks", "manager": "Jim", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1741.16, "PF_per_game": 124.37, "PF_rank": 1, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2021, "draft_slot": 5, "team": "nfl AROD mvp", "manager": "Nick", "W": 10, "L": 4, "T": 0, "record": "10-4-0", "win_pct": 0.7143, "PF": 1738.96, "PF_per_game": 124.21, "PF_rank": 2, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2021, "draft_slot": 6, "team": "Going Postal", "manager": "Steve", "W": 3, "L": 11, "T": 0, "record": "3-11-0", "win_pct": 0.2143, "PF": 1455.94, "PF_per_game": 104.0, "PF_rank": 8, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2021, "draft_slot": 7, "team": "Closer", "manager": "Rick", "W": 10, "L": 4, "T": 0, "record": "10-4-0", "win_pct": 0.7143, "PF": 1555.52, "PF_per_game": 111.11, "PF_rank": 5, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2021, "draft_slot": 8, "team": "Donkey Punchers", "manager": "Barrett", "W": 11, "L": 3, "T": 0, "record": "11-3-0", "win_pct": 0.7857, "PF": 1661.34, "PF_per_game": 118.67, "PF_rank": 4, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2021, "draft_slot": 9, "team": "Dark Shadows", "manager": "Cory", "W": 4, "L": 10, "T": 0, "record": "4-10-0", "win_pct": 0.2857, "PF": 1412.06, "PF_per_game": 100.86, "PF_rank": 11, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2021, "draft_slot": 10, "team": "Who'sUrDaddy", "manager": "Keith", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1459.8, "PF_per_game": 104.27, "PF_rank": 7, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2021, "draft_slot": 11, "team": "Spike's Chupacabras", "manager": "Spike", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1448.4, "PF_per_game": 103.46, "PF_rank": 9, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2021, "draft_slot": 12, "team": "Return of the Chinese Virus", "manager": "Brian C", "W": 4, "L": 10, "T": 0, "record": "4-10-0", "win_pct": 0.2857, "PF": 1436.68, "PF_per_game": 102.62, "PF_rank": 10, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2022, "draft_slot": 1, "team": "Scott's Scabs", "manager": "Scott", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1485.66, "PF_per_game": 106.12, "PF_rank": 7, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2022, "draft_slot": 2, "team": "Pandora's Shit-Box", "manager": "Brian C", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1647.44, "PF_per_game": 117.67, "PF_rank": 2, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Early (1-4)"}, {"season": 2022, "draft_slot": 3, "team": "RedZone480", "manager": "Robert", "W": 9, "L": 5, "T": 0, "record": "9-5-0", "win_pct": 0.6429, "PF": 1393.86, "PF_per_game": 99.56, "PF_rank": 12, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2022, "draft_slot": 4, "team": "AssKickers", "manager": "Rob M", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1561.26, "PF_per_game": 111.52, "PF_rank": 4, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2022, "draft_slot": 5, "team": "Navin R. Johnson", "manager": "J", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1524.92, "PF_per_game": 108.92, "PF_rank": 5, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2022, "draft_slot": 6, "team": "Closer", "manager": "Rick", "W": 5, "L": 9, "T": 0, "record": "5-9-0", "win_pct": 0.3571, "PF": 1436.36, "PF_per_game": 102.6, "PF_rank": 8, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2022, "draft_slot": 7, "team": "nfl AROD mvp", "manager": "Nick", "W": 5, "L": 9, "T": 0, "record": "5-9-0", "win_pct": 0.3571, "PF": 1394.4, "PF_per_game": 99.6, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2022, "draft_slot": 8, "team": "PornStache", "manager": "Jim", "W": 12, "L": 2, "T": 0, "record": "12-2-0", "win_pct": 0.8571, "PF": 1650.12, "PF_per_game": 117.87, "PF_rank": 1, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2022, "draft_slot": 9, "team": "Who'sUrDaddy", "manager": "Keith", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1506.78, "PF_per_game": 107.63, "PF_rank": 6, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2022, "draft_slot": 10, "team": "Going Postal", "manager": "Steve", "W": 5, "L": 9, "T": 0, "record": "5-9-0", "win_pct": 0.3571, "PF": 1424.18, "PF_per_game": 101.73, "PF_rank": 10, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2022, "draft_slot": 11, "team": "Donkey Punchers", "manager": "Barrett", "W": 5, "L": 9, "T": 0, "record": "5-9-0", "win_pct": 0.3571, "PF": 1430.94, "PF_per_game": 102.21, "PF_rank": 9, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2022, "draft_slot": 12, "team": "Fighting Mickeys", "manager": "Cory", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1593.38, "PF_per_game": 113.81, "PF_rank": 3, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2023, "draft_slot": 1, "team": "Scott's Scabs", "manager": "Scott", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1456.8, "PF_per_game": 104.06, "PF_rank": 8, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2023, "draft_slot": 2, "team": "RedNecks", "manager": "Jim", "W": 4, "L": 10, "T": 0, "record": "4-10-0", "win_pct": 0.2857, "PF": 1312.3, "PF_per_game": 93.74, "PF_rank": 11, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2023, "draft_slot": 3, "team": "Closer", "manager": "Rick", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1514.86, "PF_per_game": 108.2, "PF_rank": 6, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2023, "draft_slot": 4, "team": "Going Postal", "manager": "Steve", "W": 5, "L": 9, "T": 0, "record": "5-9-0", "win_pct": 0.3571, "PF": 1303.02, "PF_per_game": 93.07, "PF_rank": 12, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2023, "draft_slot": 5, "team": "PappyVanDrinkle", "manager": "Keith", "W": 12, "L": 2, "T": 0, "record": "12-2-0", "win_pct": 0.8571, "PF": 1725.64, "PF_per_game": 123.26, "PF_rank": 1, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2023, "draft_slot": 6, "team": "Broken Rhules", "manager": "Cory", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1522.18, "PF_per_game": 108.73, "PF_rank": 5, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2023, "draft_slot": 7, "team": "nfl AROD mvp", "manager": "Nick", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1426.06, "PF_per_game": 101.86, "PF_rank": 9, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2023, "draft_slot": 8, "team": "Boof", "manager": "J", "W": 4, "L": 10, "T": 0, "record": "4-10-0", "win_pct": 0.2857, "PF": 1358.58, "PF_per_game": 97.04, "PF_rank": 10, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2023, "draft_slot": 9, "team": "AssKickers", "manager": "Rob M", "W": 10, "L": 4, "T": 0, "record": "10-4-0", "win_pct": 0.7143, "PF": 1639.72, "PF_per_game": 117.12, "PF_rank": 2, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2023, "draft_slot": 10, "team": "Pig 'N a Poke", "manager": "Brian C", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1494.16, "PF_per_game": 106.73, "PF_rank": 7, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2023, "draft_slot": 11, "team": "Donkey Punchers", "manager": "Barrett", "W": 11, "L": 3, "T": 0, "record": "11-3-0", "win_pct": 0.7857, "PF": 1639.7, "PF_per_game": 117.12, "PF_rank": 3, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Late (9-12)"}, {"season": 2023, "draft_slot": 12, "team": "RedZone480", "manager": "Robert", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1527.4, "PF_per_game": 109.1, "PF_rank": 4, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2024, "draft_slot": 1, "team": "Newman", "manager": "David", "W": 4, "L": 10, "T": 0, "record": "4-10-0", "win_pct": 0.2857, "PF": 1169.0, "PF_per_game": 83.5, "PF_rank": 12, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2024, "draft_slot": 2, "team": "Scott's Scabs", "manager": "Scott", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1542.12, "PF_per_game": 110.15, "PF_rank": 6, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2024, "draft_slot": 3, "team": "AssKickers", "manager": "Rob M", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1616.54, "PF_per_game": 115.47, "PF_rank": 2, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2024, "draft_slot": 4, "team": "The Crytpo Cheetos", "manager": "Brian C", "W": 5, "L": 9, "T": 0, "record": "5-9-0", "win_pct": 0.3571, "PF": 1462.58, "PF_per_game": 104.47, "PF_rank": 9, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2024, "draft_slot": 5, "team": "Broken Rhules", "manager": "Cory", "W": 10, "L": 4, "T": 0, "record": "10-4-0", "win_pct": 0.7143, "PF": 1521.46, "PF_per_game": 108.68, "PF_rank": 7, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2024, "draft_slot": 6, "team": "RedZone480", "manager": "Robert", "W": 9, "L": 5, "T": 0, "record": "9-5-0", "win_pct": 0.6429, "PF": 1684.4, "PF_per_game": 120.31, "PF_rank": 1, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2024, "draft_slot": 7, "team": "RedNecks", "manager": "Jim", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1480.24, "PF_per_game": 105.73, "PF_rank": 8, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2024, "draft_slot": 8, "team": "Hold My Beer", "manager": "J", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1594.5, "PF_per_game": 113.89, "PF_rank": 3, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2024, "draft_slot": 9, "team": "Donkey Punchers", "manager": "Barrett", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1586.18, "PF_per_game": 113.3, "PF_rank": 5, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2024, "draft_slot": 10, "team": "Going Postal", "manager": "Steve", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1319.9, "PF_per_game": 94.28, "PF_rank": 10, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2024, "draft_slot": 11, "team": "PappyVanDrinkle", "manager": "Jace", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1588.32, "PF_per_game": 113.45, "PF_rank": 4, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2024, "draft_slot": 12, "team": "Closer", "manager": "Rick", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1280.08, "PF_per_game": 91.43, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2025, "draft_slot": 1, "team": "Newman", "manager": "David", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1461.38, "PF_per_game": 104.38, "PF_rank": 8, "final_rank": 4, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2025, "draft_slot": 2, "team": "Hold My Beer", "manager": "J", "W": 9, "L": 5, "T": 0, "record": "9-5-0", "win_pct": 0.6429, "PF": 1694.06, "PF_per_game": 121.0, "PF_rank": 1, "final_rank": 1, "made_playoffs": true, "champion": true, "finals": true, "top3": true, "bucket": "Early (1-4)"}, {"season": 2025, "draft_slot": 3, "team": "Scott's Scabs", "manager": "Scott", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1383.86, "PF_per_game": 98.85, "PF_rank": 10, "final_rank": 8, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2025, "draft_slot": 4, "team": "Baba Yaga", "manager": "Glen", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1535.74, "PF_per_game": 109.7, "PF_rank": 3, "final_rank": 6, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Early (1-4)"}, {"season": 2025, "draft_slot": 5, "team": "Donkey Punchers", "manager": "Barrett", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1364.26, "PF_per_game": 97.45, "PF_rank": 11, "final_rank": 12, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2025, "draft_slot": 6, "team": "RedNecks", "manager": "Jim", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1507.04, "PF_per_game": 107.65, "PF_rank": 5, "final_rank": 3, "made_playoffs": true, "champion": false, "finals": false, "top3": true, "bucket": "Middle (5-8)"}, {"season": 2025, "draft_slot": 7, "team": "Closer", "manager": "Rick", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1509.52, "PF_per_game": 107.82, "PF_rank": 4, "final_rank": 9, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2025, "draft_slot": 8, "team": "Broken Rhules", "manager": "Cory", "W": 6, "L": 8, "T": 0, "record": "6-8-0", "win_pct": 0.4286, "PF": 1487.42, "PF_per_game": 106.24, "PF_rank": 7, "final_rank": 7, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Middle (5-8)"}, {"season": 2025, "draft_slot": 9, "team": "Unemployeeofthemonth", "manager": "Jace", "W": 4, "L": 10, "T": 0, "record": "4-10-0", "win_pct": 0.2857, "PF": 1301.54, "PF_per_game": 92.97, "PF_rank": 12, "final_rank": 11, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2025, "draft_slot": 10, "team": "AssKickers", "manager": "Rob M", "W": 7, "L": 7, "T": 0, "record": "7-7-0", "win_pct": 0.5, "PF": 1396.18, "PF_per_game": 99.73, "PF_rank": 9, "final_rank": 10, "made_playoffs": false, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}, {"season": 2025, "draft_slot": 11, "team": "Donny's Pedo Protectors", "manager": "Brian C", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1539.98, "PF_per_game": 110.0, "PF_rank": 2, "final_rank": 2, "made_playoffs": true, "champion": false, "finals": true, "top3": true, "bucket": "Late (9-12)"}, {"season": 2025, "draft_slot": 12, "team": "RedZone480", "manager": "Robert", "W": 8, "L": 6, "T": 0, "record": "8-6-0", "win_pct": 0.5714, "PF": 1494.82, "PF_per_game": 106.77, "PF_rank": 6, "final_rank": 5, "made_playoffs": true, "champion": false, "finals": false, "top3": false, "bucket": "Late (9-12)"}], "games": {"2011": 13, "2012": 13, "2013": 13, "2014": 13, "2015": 13, "2016": 13, "2017": 13, "2018": 13, "2019": 13, "2020": 13, "2021": 14, "2022": 14, "2023": 14, "2024": 14, "2025": 14}, "leagueAvgWinPct": 0.5, "leagueAvgPPG": 104.62};
+const $ = s => document.querySelector(s);
+const tip = $("#tip");
+function showTip(e, html){ tip.innerHTML = html; tip.style.opacity = 1;
+  const p = 14; let x = e.clientX + p, y = e.clientY + p;
+  const r = tip.getBoundingClientRect();
+  if (x + r.width > innerWidth - 8) x = e.clientX - r.width - p;
+  if (y + r.height > innerHeight - 8) y = e.clientY - r.height - p;
+  tip.style.left = x + "px"; tip.style.top = y + "px"; }
+function hideTip(){ tip.style.opacity = 0; }
+const fmtPct = v => (v*100).toFixed(1) + "%";
+const ord = n => n + (n===1?"st":n===2?"nd":n===3?"rd":"th");
+const SV = "http://www.w3.org/2000/svg";
+function el(t, a){ const n = document.createElementNS(SV, t);
+  for (const k in a) n.setAttribute(k, a[k]); return n; }
+
+/* ---------- KPI tiles ---------- */
+(function(){
+  const h = D.halves, c = D.corr;
+  const g = m => c.find(x => x.metric.indexOf(m) > -1);
+  const rw = g("win %"), rp = g("points/game");
+  $("#heroR").textContent = "r = " + (rw.pearson_r < 0 ? "−" : "+") + Math.abs(rw.pearson_r).toFixed(2);
+  $("#ppgAvg").textContent = D.leagueAvgPPG.toFixed(1);
+  const tiles = [
+    ["Win % — top vs bottom half of the draft",
+     fmtPct(h.top_half_win_pct) + " vs " + fmtPct(h.bottom_half_win_pct),
+     "Slots 1–6 against slots 7–12. Gap of " + ((h.top_half_win_pct-h.bottom_half_win_pct)*100).toFixed(1) +
+     " points, p = " + h.win_pct_p.toFixed(2) + " — not significant."],
+    ["Points per game — top vs bottom half",
+     h.top_half_ppg.toFixed(1) + " vs " + h.bottom_half_ppg.toFixed(1),
+     "The largest real gap in the data: " + (h.top_half_ppg-h.bottom_half_ppg).toFixed(1) +
+     " points a game to early picks, p = " + h.ppg_p.toFixed(2) + "."],
+    ["Playoff rate — top vs bottom half",
+     fmtPct(h.top_half_playoff_rate) + " vs " + fmtPct(h.bottom_half_playoff_rate),
+     "47 berths from slots 1–6, 43 from slots 7–12. p = " + h.playoff_p.toFixed(2) + "."],
+    ["Titles — top vs bottom half",
+     h.titles_top_half + " vs " + h.titles_bottom_half,
+     "Fifteen championships, split almost exactly down the middle of the draft board."]
+  ];
+  $("#kpis").innerHTML = tiles.map(t =>
+    '<div class="tile"><p class="lab">'+t[0]+'</p><div class="val">'+t[1]+'</div><p class="cap">'+t[2]+'</p></div>'
+  ).join("");
+})();
+
+/* ---------- generic slot bar chart ---------- */
+function slotBars(mount, opts){
+  const data = D.bySlot.map(r => ({ slot: r.draft_slot, v: r[opts.field] }));
+  const W = 900, H = 300, ml = 46, mr = opts.ref != null ? 132 : 24, mt = 14, mb = 46;
+  const iw = W - ml - mr, ih = H - mt - mb;
+  const max = opts.max != null ? opts.max : Math.max.apply(null, data.map(d => d.v)) * 1.12;
+  const min = opts.min != null ? opts.min : 0;
+  const y = v => mt + ih - (v - min) / (max - min) * ih;
+  const bw = iw / data.length * 0.62, step = iw / data.length;
+
+  const svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: "100%",
+                          height: H, role: "img", "aria-label": opts.aria });
+  (opts.ticks || []).forEach(t => {
+    svg.appendChild(el("line", { class: "gl", x1: ml, x2: ml + iw, y1: y(t), y2: y(t) }));
+    const lab = el("text", { class: "tick", x: ml - 8, y: y(t) + 4, "text-anchor": "end" });
+    lab.textContent = opts.tickFmt(t); svg.appendChild(lab);
+  });
+  if (opts.ref != null){
+    svg.appendChild(el("line", { class: "refline", x1: ml, x2: ml + iw, y1: y(opts.ref), y2: y(opts.ref) }));
+    const rt = el("text", { class: "reftxt", x: ml + iw + 8, y: y(opts.ref) + 4, "text-anchor": "start" });
+    rt.textContent = opts.refLabel; svg.appendChild(rt);
+  }
+  svg.appendChild(el("line", { class: "ax", x1: ml, x2: ml + iw, y1: y(min), y2: y(min) }));
+
+  data.forEach((d, i) => {
+    const x = ml + step * i + (step - bw) / 2;
+    const top = y(d.v), hgt = Math.max(1, y(min) - top);
+    const dim = opts.emphasis ? !opts.emphasis(d) : false;
+    svg.appendChild(el("rect", { class: "bar" + (dim ? " dim" : ""), x: x, y: top,
+      width: bw, height: hgt, rx: 4, ry: 4 }));
+    svg.appendChild(el("rect", { x: x, y: y(min) - 4, width: bw, height: 4,
+      fill: dim ? "var(--deemph)" : "var(--blue)" }));
+    const vl = el("text", { class: "vlab", x: x + bw / 2, y: top - 7, "text-anchor": "middle" });
+    vl.textContent = opts.valFmt(d.v); svg.appendChild(vl);
+    const sl = el("text", { class: "slotlab", x: x + bw / 2, y: y(min) + 18, "text-anchor": "middle" });
+    sl.textContent = d.slot; svg.appendChild(sl);
+    const row = D.bySlot[i];
+    const hit = el("rect", { class: "hit", x: ml + step * i, y: mt, width: step, height: ih });
+    hit.addEventListener("mousemove", e => showTip(e,
+      "<b>Draft slot " + d.slot + "</b><br>" +
+      '<span class="k">Avg record</span> ' + row.avg_wins_per_14.toFixed(1) + "–" + (14 - row.avg_wins_per_14).toFixed(1) + " (per 14 games)<br>" +
+      '<span class="k">Avg win %</span> ' + fmtPct(row.avg_win_pct) + "<br>" +
+      '<span class="k">Avg pts/game</span> ' + row.avg_PF_per_game.toFixed(1) + "<br>" +
+      '<span class="k">Avg finish</span> ' + row.avg_final_rank.toFixed(1) + "<br>" +
+      '<span class="k">Playoffs</span> ' + row.playoff_apps + " of 15<br>" +
+      '<span class="k">Titles</span> ' + row.titles + " &middot; " +
+      '<span class="k">Finals</span> ' + row.finals_apps));
+    hit.addEventListener("mouseleave", hideTip);
+    svg.appendChild(hit);
+  });
+  const xt = el("text", { class: "tick", x: ml + iw / 2, y: H - 6, "text-anchor": "middle" });
+  xt.textContent = "Draft slot (1 = first overall pick)"; svg.appendChild(xt);
+  mount.innerHTML = ""; mount.appendChild(svg);
+}
+
+slotBars($("#c_win"), { field: "avg_win_pct", min: 0, max: 0.68,
+  ticks: [0, 0.2, 0.4, 0.5, 0.6], tickFmt: v => (v*100).toFixed(0) + "%",
+  valFmt: fmtPct, ref: D.leagueAvgWinPct, refLabel: "league avg 50.0%",
+  aria: "Average win percentage by draft slot, 2011 to 2025" });
+
+slotBars($("#c_ppg"), { field: "avg_PF_per_game", min: 90, max: 112,
+  ticks: [90, 95, 100, 105, 110], tickFmt: v => v.toFixed(0),
+  valFmt: v => v.toFixed(1), ref: D.leagueAvgPPG,
+  refLabel: "league avg " + D.leagueAvgPPG.toFixed(1),
+  aria: "Average points per game by draft slot" });
+
+slotBars($("#c_po"), { field: "playoff_rate", min: 0, max: 0.88,
+  ticks: [0, 0.25, 0.5, 0.75], tickFmt: v => (v*100).toFixed(0) + "%",
+  valFmt: fmtPct, ref: 0.5, refLabel: "50% = coin flip",
+  aria: "Playoff qualification rate by draft slot" });
+
+slotBars($("#c_titles"), { field: "titles", min: 0, max: 6,
+  ticks: [0, 1, 2, 3, 4, 5], tickFmt: v => v.toFixed(0),
+  valFmt: v => v.toFixed(0), emphasis: d => d.slot === 8,
+  aria: "Championships by draft slot" });
+
+/* ---------- season-by-season diverging chart ---------- */
+(function(){
+  const data = D.perSeason.map(r => ({ season: r.season, v: r.rho_slot_vs_winpct,
+                                       champ: r.champion, cslot: r.champ_draft_slot,
+                                       mgr: r.champ_manager }));
+  const W = 900, H = 320, ml = 52, mr = 20, mt = 16, mb = 52;
+  const iw = W - ml - mr, ih = H - mt - mb;
+  const lim = 0.8;
+  const y = v => mt + ih / 2 - v / lim * (ih / 2);
+  const step = iw / data.length, bw = step * 0.56;
+  const svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", height: H,
+    role: "img", "aria-label": "Within-season correlation between draft slot and win percentage, 2011 to 2025" });
+  [-0.8, -0.4, 0, 0.4, 0.8].forEach(t => {
+    svg.appendChild(el("line", { class: t === 0 ? "ax" : "gl", x1: ml, x2: ml + iw, y1: y(t), y2: y(t) }));
+    const lab = el("text", { class: "tick", x: ml - 8, y: y(t) + 4, "text-anchor": "end" });
+    lab.textContent = (t > 0 ? "+" : t < 0 ? "−" : "") + Math.abs(t).toFixed(1);
+    svg.appendChild(lab);
+  });
+  data.forEach((d, i) => {
+    const x = ml + step * i + (step - bw) / 2;
+    const top = d.v < 0 ? y(0) : y(d.v);
+    const hgt = Math.max(2, Math.abs(y(d.v) - y(0)));
+    svg.appendChild(el("rect", { class: "bar " + (d.v < 0 ? "neg" : "pos"),
+      x: x, y: top, width: bw, height: hgt, rx: 4, ry: 4 }));
+    svg.appendChild(el("rect", { x: x, y: d.v < 0 ? y(0) : y(0) - 4, width: bw, height: 4,
+      fill: d.v < 0 ? "var(--blue)" : "var(--red)" }));
+    const sl = el("text", { class: "slotlab", x: x + bw / 2, y: mt + ih + 20,
+      "text-anchor": "middle" });
+    sl.textContent = d.season; svg.appendChild(sl);
+    const hit = el("rect", { class: "hit", x: ml + step * i, y: mt, width: step, height: ih });
+    hit.addEventListener("mousemove", e => showTip(e,
+      "<b>" + d.season + " season</b><br>" +
+      '<span class="k">Slot vs win %</span> ' + (d.v > 0 ? "+" : "−") + Math.abs(d.v).toFixed(2) + "<br>" +
+      '<span class="k">Reads as</span> ' + (d.v < 0 ? "earlier picks did better" : d.v > 0 ? "later picks did better" : "dead flat") + "<br>" +
+      '<span class="k">Champion</span> ' + d.champ + " (" + d.mgr + "), picked " + ord(d.cslot)));
+    hit.addEventListener("mouseleave", hideTip);
+    svg.appendChild(hit);
+  });
+  const l1 = el("text", { class: "reftxt", x: ml + 4, y: y(0.72) });
+  l1.textContent = "↑ later picks did better"; svg.appendChild(l1);
+  const l2 = el("text", { class: "reftxt", x: ml + 4, y: y(-0.66) });
+  l2.textContent = "↓ earlier picks did better"; svg.appendChild(l2);
+  const n = el("text", { class: "tick", x: ml + iw / 2, y: H - 8, "text-anchor": "middle" });
+  n.textContent = "Only 2012 and 2020 clear statistical significance — and they point in opposite directions to 2016";
+  svg.appendChild(n);
+  $("#c_season").innerHTML = ""; $("#c_season").appendChild(svg);
+})();
+
+/* ---------- heatmap ---------- */
+(function(){
+  const seasons = [...new Set(D.rows.map(r => r.season))].sort();
+  const stops = ["#0d366b","#184f95","#256abf","#2a78d6","#3987e5","#5598e7","#6da7ec","#86b6ef","#9ec5f4","#b7d3f6","#cde2fb","#e4eefc"];
+  const stopsDark = ["#cde2fb","#b7d3f6","#9ec5f4","#86b6ef","#6da7ec","#5598e7","#3987e5","#2a78d6","#256abf","#1c5cab","#184f95","#123c72"];
+  function build(){
+    const dark = document.documentElement.getAttribute("data-theme") === "dark" ||
+      (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme:dark)").matches);
+    const ramp = dark ? stopsDark : stops;
+    let h = '<table class="hm"><thead><tr><th class="yr"></th>';
+    for (let s = 1; s <= 12; s++) h += "<th>" + s + "</th>";
+    h += "</tr></thead><tbody>";
+    seasons.forEach(yr => {
+      h += '<tr><th class="yr">' + yr + "</th>";
+      for (let s = 1; s <= 12; s++){
+        const r = D.rows.find(x => x.season === yr && x.draft_slot === s);
+        const light = dark ? r.final_rank <= 6 : r.final_rank >= 7;
+        h += '<td class="' + (light ? "lt" : "") + '" style="background:' + ramp[r.final_rank - 1] +
+             '" data-s="' + yr + '" data-slot="' + s + '">' + r.final_rank + "</td>";
+      }
+      h += "</tr>";
+    });
+    h += "</tbody></table>";
+    const mount = $("#c_heat");
+    mount.innerHTML = h;
+    mount.querySelectorAll("td[data-s]").forEach(td => {
+      td.addEventListener("mousemove", e => {
+        const r = D.rows.find(x => x.season === +td.dataset.s && x.draft_slot === +td.dataset.slot);
+        showTip(e, "<b>" + r.team + "</b> · " + r.manager + "<br>" +
+          '<span class="k">' + r.season + " · picked " + ord(r.draft_slot) + "</span><br>" +
+          '<span class="k">Record</span> ' + r.record + " (" + fmtPct(r.win_pct) + ")<br>" +
+          '<span class="k">Points</span> ' + r.PF.toFixed(2) + " · " + r.PF_per_game.toFixed(1) + "/game (" + ord(r.PF_rank) + " most)<br>" +
+          '<span class="k">Finish</span> ' + ord(r.final_rank) + (r.final_rank === 1 ? " — champion" : r.made_playoffs ? " (made playoffs)" : " (missed playoffs)"));
+      });
+      td.addEventListener("mouseleave", hideTip);
+    });
+  }
+  build();
+  window.__rebuildHeat = build;
+})();
+
+/* ---------- data tables under charts ---------- */
+function slotTable(mount, cols){
+  let h = '<table class="dt"><thead><tr><th>Slot</th>' +
+    cols.map(c => "<th>" + c[0] + "</th>").join("") + "</tr></thead><tbody>";
+  D.bySlot.forEach(r => {
+    h += "<tr><td>" + r.draft_slot + "</td>" +
+      cols.map(c => "<td>" + c[1](r) + "</td>").join("") + "</tr>";
+  });
+  h += "</tbody></table>";
+  mount.innerHTML = h;
+}
+slotTable($("#t_win"), [["Avg win %", r => fmtPct(r.avg_win_pct)],
+  ["Avg wins / 14 gms", r => r.avg_wins_per_14.toFixed(2)],
+  ["Seasons", r => r.seasons]]);
+slotTable($("#t_ppg"), [["Avg pts/game", r => r.avg_PF_per_game.toFixed(2)],
+  ["Avg pts rank", r => r.avg_PF_rank.toFixed(2)], ["Seasons", r => r.seasons]]);
+slotTable($("#t_po"), [["Playoff rate", r => fmtPct(r.playoff_rate)],
+  ["Berths", r => r.playoff_apps + " / 15"], ["Avg finish", r => r.avg_final_rank.toFixed(2)]]);
+slotTable($("#t_titles"), [["Titles", r => r.titles], ["Finals", r => r.finals_apps],
+  ["Top-3 finishes", r => r.top3]]);
+
+(function(){
+  let h = '<table class="dt"><thead><tr><th>Season</th><th>Slot vs win %</th><th>p</th>' +
+    "<th>Slot vs points</th><th>Slot vs finish</th><th>Champion</th><th>Champ slot</th>" +
+    "<th>Playoff slots</th></tr></thead><tbody>";
+  D.perSeason.forEach(r => {
+    h += "<tr><td>" + r.season + "</td><td>" + r.rho_slot_vs_winpct.toFixed(3) + "</td><td>" +
+      r.p_winpct.toFixed(2) + "</td><td>" + r.rho_slot_vs_points.toFixed(3) + "</td><td>" +
+      r.rho_slot_vs_finish.toFixed(3) + "</td><td style='text-align:left'>" + r.champion +
+      " (" + r.champ_manager + ")</td><td>" + r.champ_draft_slot + "</td><td>" +
+      r.playoff_slots + "</td></tr>";
+  });
+  h += "</tbody></table>";
+  $("#t_season").innerHTML = h;
+})();
+
+/* ---------- bucket tables ---------- */
+(function(){
+  let h = '<table class="dt"><caption>By draft-slot bucket</caption><thead><tr><th style="text-align:left">Bucket</th>' +
+    "<th>Team-seasons</th><th>Avg win %</th><th>Avg pts/game</th><th>Avg finish</th>" +
+    "<th>Playoff rate</th><th>Titles</th><th>Finals</th></tr></thead><tbody>";
+  D.buckets.forEach(b => {
+    h += "<tr><td style='text-align:left'>" + b.bucket + "</td><td>" + b.n + "</td><td>" +
+      fmtPct(b.avg_win_pct) + "</td><td>" + b.avg_PF_per_game.toFixed(1) + "</td><td>" +
+      b.avg_final_rank.toFixed(2) + "</td><td>" + fmtPct(b.playoff_rate) + "</td><td>" +
+      b.titles + "</td><td>" + b.finals + "</td></tr>";
+  });
+  h += "</tbody></table>";
+  $("#t_buckets").innerHTML = h;
+
+  const x = D.halves;
+  let g = '<table class="dt"><caption>Top half vs bottom half of the draft board</caption><thead><tr>' +
+    '<th style="text-align:left">Measure</th><th>Slots 1–6</th><th>Slots 7–12</th><th>Gap</th><th>p-value</th>' +
+    "<th>Significant?</th></tr></thead><tbody>";
+  const rows = [
+    ["Average win %", fmtPct(x.top_half_win_pct), fmtPct(x.bottom_half_win_pct),
+     ((x.top_half_win_pct - x.bottom_half_win_pct) * 100).toFixed(1) + " pts", x.win_pct_p],
+    ["Average points per game", x.top_half_ppg.toFixed(1), x.bottom_half_ppg.toFixed(1),
+     (x.top_half_ppg - x.bottom_half_ppg).toFixed(1), x.ppg_p],
+    ["Playoff qualification rate", fmtPct(x.top_half_playoff_rate), fmtPct(x.bottom_half_playoff_rate),
+     ((x.top_half_playoff_rate - x.bottom_half_playoff_rate) * 100).toFixed(1) + " pts", x.playoff_p],
+    ["Championships (of 15)", x.titles_top_half, x.titles_bottom_half,
+     (x.titles_top_half - x.titles_bottom_half), null]
+  ];
+  rows.forEach(r => {
+    g += "<tr><td style='text-align:left'>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] +
+      "</td><td>" + r[3] + "</td><td>" + (r[4] == null ? "—" : r[4].toFixed(3)) + "</td><td>" +
+      (r[4] == null ? "—" : (r[4] < 0.05 ? "yes" : "no")) + "</td></tr>";
+  });
+  g += "</tbody></table>";
+  $("#t_halves").innerHTML = g;
+})();
+
+/* ---------- season tables ---------- */
+(function(){
+  const seasons = [...new Set(D.rows.map(r => r.season))].sort();
+  let active = "all";
+  const chips = $("#chips");
+  chips.innerHTML = '<button class="chip" data-y="all" aria-pressed="true">All seasons</button>' +
+    seasons.map(y => '<button class="chip" data-y="' + y + '" aria-pressed="false">' + y + "</button>").join("");
+  function render(){
+    const show = active === "all" ? seasons : [+active];
+    $("#seasonTables").innerHTML = show.map(yr => {
+      const rows = D.rows.filter(r => r.season === yr).sort((a, b) => a.draft_slot - b.draft_slot);
+      const totPF = rows.reduce((s, r) => s + r.PF, 0);
+      const g = D.games[yr];
+      let h = '<table class="dt" style="margin-bottom:26px"><caption>' + yr +
+        " — ordered by draft slot &middot; " + g + "-game regular season</caption><thead><tr>" +
+        "<th>Slot</th><th>Team</th><th>Manager</th><th>Record</th><th>Win %</th>" +
+        "<th>Points for</th><th>Pts/game</th><th>Pts rank</th><th>Final finish</th></tr></thead><tbody>";
+      rows.forEach(r => {
+        h += '<tr class="' + (r.made_playoffs ? "po" : "") + '"><td>' + r.draft_slot + "</td>" +
+          "<td>" + r.team + "</td><td>" + r.manager + "</td><td>" + r.record + "</td><td>" +
+          fmtPct(r.win_pct) + "</td><td>" + r.PF.toFixed(2) + "</td><td>" + r.PF_per_game.toFixed(1) +
+          "</td><td>" + ord(r.PF_rank) + "</td><td>" + ord(r.final_rank) +
+          (r.final_rank === 1 ? ' <span class="pill champ">champion</span>' :
+           r.made_playoffs ? ' <span class="pill">playoffs</span>' : "") + "</td></tr>";
+      });
+      h += "<tr><td></td><td><b>League total</b></td><td></td><td></td><td></td><td><b>" +
+        totPF.toFixed(2) + "</b></td><td>" + (totPF / 12 / g).toFixed(1) +
+        "</td><td></td><td></td></tr>";
+      h += "</tbody></table>";
+      return h;
+    }).join("");
+  }
+  chips.addEventListener("click", e => {
+    const b = e.target.closest("button.chip"); if (!b) return;
+    active = b.dataset.y;
+    chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c === b));
+    render();
+  });
+  render();
+})();
+
+/* ---------- theme ---------- */
+(function(){
+  const btn = $("#themeBtn"), root = document.documentElement;
+  function sync(){
+    const dark = root.getAttribute("data-theme") === "dark";
+    btn.textContent = dark ? "Light mode" : "Dark mode";
+    if (window.__rebuildHeat) window.__rebuildHeat();
+  }
+  btn.addEventListener("click", () => {
+    root.setAttribute("data-theme", root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    sync();
+  });
+  sync();
+})();
+</script>
+</body>
+</html>
