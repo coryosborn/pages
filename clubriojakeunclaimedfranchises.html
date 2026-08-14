@@ -61,16 +61,18 @@ tbody tr[data-t]:hover td{background:color-mix(in srgb,var(--series-1) 7%,transp
 <header>
   <div>
     <h1>Club Rio Jake — who owned these teams?</h1>
-    <p class="sub">Fifteen franchises from the CBS years (2001–2010) are sitting in the archive with nobody's
-       name on them. Until they're claimed, those seasons don't count toward anyone's all-time record.
-       Click a row for the full year-by-year and a list of who's already accounted for.</p>
+    <p class="sub"><b style="color:var(--gold)">✅ Solved.</b> Fifteen franchises from the CBS years
+       (2001–2010) were sitting in the archive with nobody's name on them. Every one has now been
+       claimed — the owners are filled in below, and the full record lives in the
+       <a href="clubriojakefranchiseregistry.html" style="color:var(--series-1)">Franchise Registry</a>.
+       This page stays up for posterity. Click a row for the year-by-year.</p>
   </div>
   <div class="spacer"></div>
   <button class="ghost" id="theme">Dark mode</button>
 </header>
 
 <div class="card">
-  <h2>The unclaimed</h2>
+  <h2>The formerly unclaimed</h2>
   <p class="note">Records include playoff games, which is how CBS reported them.</p>
   <table>
     <thead><tr>
@@ -79,14 +81,14 @@ tbody tr[data-t]:hover td{background:color-mix(in srgb,var(--series-1) 7%,transp
     </tr></thead>
     <tbody id="tbody"></tbody>
   </table>
-  <div class="hint"><b style="color:var(--text-primary)">The two that matter most:</b> BoneHeads ran seven
-     straight seasons and made the 2007 final. Alien Fat Bastards went 12-4 in 2006 and lost that final.
-     Both are currently credited to nobody.</div>
+  <div class="hint"><b style="color:var(--text-primary)">The two that mattered most:</b> BoneHeads ran seven
+     straight seasons and made the 2007 final — that was Michael Bain. Alien Fat Bastards went 12-4 in 2006
+     and lost that final — that was Ralph Fearon. Credit where it's due.</div>
 </div>
 
 <div class="card">
-  <h2>Already claimed</h2>
-  <p class="note">So nobody wastes a guess on a name that's already spoken for.</p>
+  <h2>Already claimed before the hunt</h2>
+  <p class="note">The names that were spoken for from the start — kept for the record.</p>
   <div class="who" style="color:var(--text-secondary)">
     <b>Cory</b> — Big Red Machine &nbsp;·&nbsp; <b>Robert</b> — RedZone420 &nbsp;·&nbsp;
     <b>Rick</b> — The Closer &nbsp;·&nbsp; <b>Rob M</b> — AssKickers &nbsp;·&nbsp;
@@ -103,6 +105,12 @@ tbody tr[data-t]:hover td{background:color-mix(in srgb,var(--series-1) 7%,transp
 </div></div>
 <script>
 const D = {"recs":[{"team":"BoneHeads","seasons":[{"year":2001,"W":7,"L":8,"PF":1274,"PA":1058},{"year":2002,"W":2,"L":13,"PF":981,"PA":1396},{"year":2003,"W":7,"L":10,"PF":1186,"PA":1356},{"year":2004,"W":9,"L":6,"PF":1690,"PA":1215},{"year":2005,"W":8,"L":7,"PF":1543,"PA":1310},{"year":2006,"W":8,"L":7,"PF":1410,"PA":1245},{"year":2007,"W":10,"L":5,"PF":1730,"PA":1502}],"n":7,"W":51,"L":56,"win":0.4766355140186916,"first":2001,"last":2007,"best":{"year":2007,"W":10,"L":5,"PF":1730,"PA":1502},"pf":1402.0,"note":"lost the 2007 final, 123-112"},{"team":"Alien Fat Bastards","seasons":[{"year":2004,"W":8,"L":8,"PF":1483,"PA":1446},{"year":2005,"W":9,"L":7,"PF":1382,"PA":1225},{"year":2006,"W":12,"L":4,"PF":1534,"PA":1231},{"year":2007,"W":8,"L":6,"PF":1673,"PA":1475},{"year":2008,"W":6,"L":8,"PF":1533,"PA":1316}],"n":5,"W":43,"L":33,"win":0.5657894736842105,"first":2004,"last":2008,"best":{"year":2006,"W":12,"L":4,"PF":1534,"PA":1231},"pf":1521.0,"note":"lost the 2006 final, 127-73"},{"team":"Fighting Texas Aggies","seasons":[{"year":2004,"W":8,"L":7,"PF":1388,"PA":1203},{"year":2005,"W":11,"L":4,"PF":1545,"PA":1254},{"year":2006,"W":6,"L":9,"PF":1390,"PA":1296},{"year":2007,"W":7,"L":8,"PF":1555,"PA":1547}],"n":4,"W":32,"L":28,"win":0.5333333333333333,"first":2004,"last":2007,"best":{"year":2005,"W":11,"L":4,"PF":1545,"PA":1254},"pf":1469.5,"note":""},{"team":"Fat Heads","seasons":[{"year":2004,"W":7,"L":9,"PF":1423,"PA":1431},{"year":2005,"W":5,"L":9,"PF":1084,"PA":1164},{"year":2006,"W":10,"L":6,"PF":1415,"PA":1278},{"year":2007,"W":5,"L":9,"PF":1274,"PA":1466}],"n":4,"W":27,"L":33,"win":0.45,"first":2004,"last":2007,"best":{"year":2006,"W":10,"L":6,"PF":1415,"PA":1278},"pf":1299.0,"note":""},{"team":"FartKnockers","seasons":[{"year":2003,"W":10,"L":7,"PF":1650,"PA":1356},{"year":2004,"W":10,"L":6,"PF":1483,"PA":1394}],"n":2,"W":20,"L":13,"win":0.6060606060606061,"first":2003,"last":2004,"best":{"year":2004,"W":10,"L":6,"PF":1483,"PA":1394},"pf":1566.5,"note":"lost the 2003 final, 102-100"},{"team":"ChiefsNPhx","seasons":[{"year":2002,"W":10,"L":5,"PF":1349,"PA":1281},{"year":2003,"W":6,"L":9,"PF":1258,"PA":1135}],"n":2,"W":16,"L":14,"win":0.5333333333333333,"first":2002,"last":2003,"best":{"year":2002,"W":10,"L":5,"PF":1349,"PA":1281},"pf":1303.5,"note":""},{"team":"KissMyAss","seasons":[{"year":2005,"W":6,"L":9,"PF":1333,"PA":1255},{"year":2006,"W":6,"L":10,"PF":1357,"PA":1299}],"n":2,"W":12,"L":19,"win":0.3870967741935484,"first":2005,"last":2006,"best":{"year":2005,"W":6,"L":9,"PF":1333,"PA":1255},"pf":1345.0,"note":""},{"team":"The Dillholes","seasons":[{"year":2010,"W":8,"L":5,"PF":1305,"PA":1275}],"n":1,"W":8,"L":5,"win":0.6153846153846154,"first":2010,"last":2010,"best":{"year":2010,"W":8,"L":5,"PF":1305,"PA":1275},"pf":1305.0,"note":""},{"team":"Kramerica, Inc.","seasons":[{"year":2003,"W":9,"L":6,"PF":1424,"PA":1213}],"n":1,"W":9,"L":6,"win":0.6,"first":2003,"last":2003,"best":{"year":2003,"W":9,"L":6,"PF":1424,"PA":1213},"pf":1424.0,"note":""},{"team":"AZCoolGuy34","seasons":[{"year":2003,"W":8,"L":7,"PF":1375,"PA":1154}],"n":1,"W":8,"L":7,"win":0.5333333333333333,"first":2003,"last":2003,"best":{"year":2003,"W":8,"L":7,"PF":1375,"PA":1154},"pf":1375.0,"note":""},{"team":"Dos Refugees","seasons":[{"year":2003,"W":5,"L":10,"PF":1304,"PA":1225}],"n":1,"W":5,"L":10,"win":0.3333333333333333,"first":2003,"last":2003,"best":{"year":2003,"W":5,"L":10,"PF":1304,"PA":1225},"pf":1304.0,"note":""},{"team":"Wait til next year","seasons":[{"year":2001,"W":5,"L":11,"PF":1084,"PA":1228}],"n":1,"W":5,"L":11,"win":0.3125,"first":2001,"last":2001,"best":{"year":2001,"W":5,"L":11,"PF":1084,"PA":1228},"pf":1084.0,"note":""},{"team":"The Invesco Suckaz","seasons":[{"year":2001,"W":4,"L":10,"PF":1035,"PA":1158}],"n":1,"W":4,"L":10,"win":0.2857142857142857,"first":2001,"last":2001,"best":{"year":2001,"W":4,"L":10,"PF":1035,"PA":1158},"pf":1035.0,"note":""},{"team":"BuzzKill","seasons":[{"year":2009,"W":3,"L":11,"PF":1240,"PA":1356}],"n":1,"W":3,"L":11,"win":0.21428571428571427,"first":2009,"last":2009,"best":{"year":2009,"W":3,"L":11,"PF":1240,"PA":1356},"pf":1240.0,"note":""},{"team":"Desperado","seasons":[{"year":2002,"W":3,"L":12,"PF":999,"PA":1301}],"n":1,"W":3,"L":12,"win":0.2,"first":2002,"last":2002,"best":{"year":2002,"W":3,"L":12,"PF":999,"PA":1301},"pf":999.0,"note":""}],"known":{"2001":["Bill Calvert","Cory","Joe Frein","John Bunch","Keith Martindale","Rick","Rob M","Robert","Scott"],"2002":["Cory","Joe Frein","John Bunch","Keith Martindale","Rick","Rob M","Robert","Scott","Tom Ruwald"],"2003":["Cory","John Bunch","Rick","Rob M","Robert","Scott"],"2004":["Cory","John Bunch","Keith Martindale","Rick","Rob M","Robert","Scott"],"2005":["Cory","John Bunch","Keith Martindale","Rick","Rob M","Robert","Scott"],"2006":["Cory","John Bunch","Keith Martindale","Rick","Rob M","Robert","Scott"],"2007":["Cory","Jim Costolo","John Bunch","Keith Martindale","Rick","Rob M","Robert","Scott"],"2008":["Barrett","Cory","Jim Costolo","John Bunch","Keith Martindale","Michael M","Rick","Rob M","Robert","Scott","Spike"],"2009":["Barrett","Cory","Jim Costolo","John Bunch","Keith Martindale","Michael M","Rick","Rob M","Robert","Scott","Spike"],"2010":["Barrett","Cory","Jim Costolo","John Bunch","Keith Martindale","Michael M","Rick","Rob M","Robert","Scott","Spike"]}};
+const OWNERS = {"BoneHeads":"Michael Bain","Alien Fat Bastards":"Ralph Fearon",
+  "Fighting Texas Aggies":"Brent Redwood","Fat Heads":"Mike Mason","FartKnockers":"Mark Bogojevich",
+  "ChiefsNPhx":"Frank Kearney","KissMyAss":"Jim Costolo","The Dillholes":"Craig Mead",
+  "Kramerica, Inc.":"Christian Spickler","AZCoolGuy34":"Mike Mason","Dos Refugees":"Joe Frein",
+  "Wait til next year":"Tom Ruwald","The Invesco Suckaz":"Todd Corley","BuzzKill":"Ed Mason",
+  "Desperado":"Christian Spickler"};
 let open_ = null;
 const ord = n => n + (n%10===1&&n%100!==11?"st":n%10===2&&n%100!==12?"nd":n%10===3&&n%100!==13?"rd":"th");
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -116,7 +124,7 @@ document.getElementById("tbody").innerHTML = D.recs.map((r,i) => `
     <td>${(r.win*100).toFixed(1)}%</td>
     <td class="hide-s">${Math.round(r.pf)}</td>
     <td class="hide-s">${r.best.year}: ${r.best.W}–${r.best.L}</td>
-    <td class="owner">_______________</td>
+    <td><b>${esc(OWNERS[r.team] || "?")}</b></td>
   </tr>
   <tr class="detail" data-d="${i}" hidden><td colspan="8"><div class="inner"></div></td></tr>`).join("");
 
@@ -130,8 +138,9 @@ document.querySelectorAll("#tbody tr[data-t]").forEach(tr => tr.onclick = () => 
   row.querySelector(".inner").innerHTML =
     `<div class="chips">` + r.seasons.map(s =>
       `<span class="chip">${s.year} <b>${s.W}–${s.L}</b> · ${s.PF} pts for · ${s.PA} against</span>`).join("") +
-    `</div><div class="who">Owners already accounted for in ${yrs.length === 1 ? yrs[0] : yrs[0] + "–" + yrs[yrs.length-1]}:
-       <b>${co.join(", ")}</b>. Whoever owned ${esc(r.team)} is <i>not</i> on that list.</div>`;
+    `</div><div class="who">${esc(r.team)} belonged to <b>${esc(OWNERS[r.team] || "?")}</b>.
+       Owners already accounted for in ${yrs.length === 1 ? yrs[0] : yrs[0] + "–" + yrs[yrs.length-1]}
+       before the mystery was solved: <b>${co.join(", ")}</b>.</div>`;
   row.hidden = false; open_ = i;
 });
 
